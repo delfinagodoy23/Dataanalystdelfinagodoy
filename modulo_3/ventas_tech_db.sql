@@ -14,6 +14,9 @@ DROP TABLE IF EXISTS ventas;
 DROP TABLE IF EXISTS productos;
 DROP TABLE IF EXISTS clientes;
 DROP TABLE IF EXISTS categorias;
+DROP TABLE IF EXISTS territorios;
+DROP TABLE IF EXISTS canales;
+DROP TABLE IF EXISTS vendedores;
 
 -- CREATE TABLE: categorias
 
@@ -46,23 +49,95 @@ FOREIGN KEY (id_categoria)
 REFERENCES categorias(id_categoria)
 );
 
-
--- CREATE TABLE: ventas
-
-CREATE TABLE ventas (
-id_venta INT PRIMARY KEY,
-id_cliente INT,
-id_producto INT,
-cantidad INT NOT NULL,
-precio_unitario DECIMAL(10,2) NOT NULL,
-fecha_venta DATE NOT NULL,
-
-FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente),
-
-FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+-- CREATE TABLE: territorios
+CREATE TABLE territorios (
+    id_territorio INT PRIMARY KEY,
+    region VARCHAR(50) NOT NULL,
+    ciudad_zona VARCHAR(100) NOT NULL
 );
 
+
+-- CREATE TABLE: canales
+
+CREATE TABLE canales (
+    id_canal INT PRIMARY KEY,
+    nombre_canal VARCHAR(50) NOT NULL
+);
+
+
+-- CREATE TABLE: vendedores
+CREATE TABLE vendedores (
+    id_vendedor INT PRIMARY KEY,
+    nombre_vendedor VARCHAR(100) NOT NULL,
+    equipo_sucursal VARCHAR(100)
+);
+
+-- CREATE TABLE: ventas
+CREATE TABLE ventas (
+    id_venta INT PRIMARY KEY,
+    id_cliente INT,
+    id_producto INT,
+    id_territorio INT,
+    id_canal INT,
+    id_vendedor INT,
+    cantidad INT NOT NULL,
+    precio_unitario DECIMAL(10,2) NOT NULL,
+    fecha_venta DATE NOT NULL,
+
+    FOREIGN KEY (id_cliente)
+        REFERENCES clientes(id_cliente),
+
+    FOREIGN KEY (id_producto)
+        REFERENCES productos(id_producto),
+
+    FOREIGN KEY (id_territorio)
+        REFERENCES territorios(id_territorio),
+
+    FOREIGN KEY (id_canal)
+        REFERENCES canales(id_canal),
+
+    FOREIGN KEY (id_vendedor)
+        REFERENCES vendedores(id_vendedor)
+);
+
+
+
 -- SECCION DML
+
+-- INSERT: territorios
+
+INSERT INTO territorios VALUES (1, 'Centro', 'Buenos Aires');
+
+INSERT INTO territorios VALUES (2, 'Centro', 'Córdoba');
+
+INSERT INTO territorios VALUES (3, 'Litoral', 'Rosario');
+
+INSERT INTO territorios VALUES (4, 'Cuyo', 'Mendoza');
+
+INSERT INTO territorios VALUES (5, 'Norte', 'Tucumán');
+
+
+-- INSERT: canales
+
+INSERT INTO canales VALUES (1, 'Online');
+
+INSERT INTO canales VALUES (2, 'Tienda Física');
+
+INSERT INTO canales VALUES (3, 'Telefónico');
+
+
+-- INSERT: vendedores
+
+INSERT INTO vendedores VALUES (1, 'Sofía Martínez', 'Sucursal Buenos Aires');
+
+INSERT INTO vendedores VALUES (2, 'Lucas Fernández', 'Sucursal Córdoba');
+
+INSERT INTO vendedores VALUES (3, 'Valentina Gómez', 'Sucursal Rosario');
+
+INSERT INTO vendedores VALUES (4, 'Mateo Rodríguez', 'Sucursal Mendoza');
+
+INSERT INTO vendedores VALUES (5, 'Camila López', 'Sucursal Tucumán');
+
 -- INSERT: categorias
 
 INSERT INTO categorias VALUES (1, 'Computación', 'Laptops, PCs y monitores');
@@ -101,25 +176,47 @@ INSERT INTO productos VALUES (6, 'Teclado Mecánico', 2, 95.00, 40, 1);
 
 -- INSERT: ventas
 
-INSERT INTO ventas VALUES (1, 1, 1, 2, 1200.00, '2024-03-05');
+INSERT INTO ventas VALUES (
+    1, 1, 1, 1, 1, 1, 2, 1200.00, '2024-03-05'
+);
 
-INSERT INTO ventas VALUES (2, 2, 2, 5, 28.00, '2024-03-06');
+INSERT INTO ventas VALUES (
+    2, 2, 2, 2, 2, 2, 5, 28.00, '2024-03-06'
+);
 
-INSERT INTO ventas VALUES (3, 3, 3, 1, 450.00, '2024-03-07');
+INSERT INTO ventas VALUES (
+    3, 3, 3, 3, 1, 3, 1, 450.00, '2024-03-07'
+);
 
-INSERT INTO ventas VALUES (4, 1, 4, 2, 120.00, '2024-03-08');
+INSERT INTO ventas VALUES (
+    4, 1, 4, 1, 2, 1, 2, 120.00, '2024-03-08'
+);
 
-INSERT INTO ventas VALUES (5, 4, 5, 3, 130.00, '2024-03-10');
+INSERT INTO ventas VALUES (
+    5, 4, 5, 4, 3, 4, 3, 130.00, '2024-03-10'
+);
 
-INSERT INTO ventas VALUES (6, 2, 6, 4, 95.00, '2024-03-11');
+INSERT INTO ventas VALUES (
+    6, 2, 6, 2, 1, 2, 4, 95.00, '2024-03-11'
+);
 
-INSERT INTO ventas VALUES (7, 5, 1, 1, 1200.00, '2024-03-12');
+INSERT INTO ventas VALUES (
+    7, 5, 1, 5, 1, 5, 1, 1200.00, '2024-03-12'
+);
 
-INSERT INTO ventas VALUES (8, 3, 2, 8, 28.00, '2024-03-13');
+INSERT INTO ventas VALUES (
+    8, 3, 2, 3, 2, 3, 8, 28.00, '2024-03-13'
+);
 
-INSERT INTO ventas VALUES (9, 4, 4, 1, 120.00, '2024-03-14');
+INSERT INTO ventas VALUES (
+    9, 4, 4, 4, 1, 4, 1, 120.00, '2024-03-14'
+);
 
-INSERT INTO ventas VALUES (10, 5, 3, 2, 450.00, '2024-03-15');
+INSERT INTO ventas VALUES (
+    10, 5, 3, 5, 2, 5, 2, 450.00, '2024-03-15'
+);
+
+
 
 -- VALIDACION
 
@@ -129,4 +226,8 @@ SELECT * FROM clientes;
 
 SELECT * FROM productos;
 
-SELECT * FROM ventas;
+SELECT * FROM territorios;
+
+SELECT * FROM canales;
+
+SELECT * FROM vendedores;
